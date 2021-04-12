@@ -11,6 +11,11 @@ class Play extends Phaser.Scene {
         
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+
+        //load sounds
+        this.load.audio('sfx_explosion', './assets/explosion.wav');
+        this.load.audio('sfx_rocket', './assets/rocket_fire.wav');
+        this.load.audio('sfx_select', './assets/select.wav');
     }
 
     create() {
@@ -68,11 +73,11 @@ class Play extends Phaser.Scene {
         //GAME OVER flag
         this.gameOver = false;
         
-        //60 sec clock
+        //Timer
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(60000, () => {
+        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -81,6 +86,11 @@ class Play extends Phaser.Scene {
         //check for restart key
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
+        }
+
+        //check for menu key
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.scene.start("menuScene");
         }
 
         //update background scrolling
@@ -146,5 +156,8 @@ class Play extends Phaser.Scene {
         //add to score
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
+
+        //play sound
+        this.sound.play('sfx_explosion');
     }
 }
