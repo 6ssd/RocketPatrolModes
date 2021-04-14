@@ -1,6 +1,6 @@
 let config = {
     type:Phaser.AUTO,
-    width: 640,
+    width: 1280,
     height: 480,
     scene: [Menu, Play]
 }
