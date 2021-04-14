@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         //load images
         this.load.image('rocket', './assets/rocket.png');
+        this.load.image('rocket2', './assets/rocket2.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         
@@ -33,7 +34,7 @@ class Play extends Phaser.Scene {
 
         //add rocket: player 1
         this.p1Rocket = new P1Rocket(this, game.config.width/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
-        this.p2Rocket = new P2Rocket(this, game.config.width*3/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
+        this.p2Rocket = new P2Rocket(this, game.config.width*3/4, game.config.height - borderUIsize - borderPadding, 'rocket2', 0, 0).setOrigin(0.5, 0);
 
         //add spaceships
         this.ship01 = new Spaceship(this, game.config.width + borderUIsize*6, borderUIsize*4, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -41,7 +42,6 @@ class Play extends Phaser.Scene {
         this.ship03 = new Spaceship(this, game.config.width, borderUIsize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
 
         //define keys
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
