@@ -32,8 +32,8 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         //add rocket: player 1
-        this.p1Rocket = new Rocket(this, game.config.width/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
-        this.p2Rocket = new Rocket(this, game.config.width*3/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
+        this.p1Rocket = new P1Rocket(this, game.config.width/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
+        this.p2Rocket = new P2Rocket(this, game.config.width*3/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
 
         //add spaceships
         this.ship01 = new Spaceship(this, game.config.width + borderUIsize*6, borderUIsize*4, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -46,15 +46,21 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);            //Player 1 left
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);            //Player 1 right
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);            //Player 1 fire
+
+        keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);            //Player 2 left
+        keyL = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);            //Player 2 right
+        keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);            //Player 2 fire
+
+
         //animation config
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
             frameRate: 30
         });
-
-        // //initialize score
-        // this.p1Score = 0;
 
         //display score;
         let scoreConfig = {
