@@ -17,9 +17,16 @@ class Play extends Phaser.Scene {
         this.load.audio('sfx_explosion', './assets/explosion.wav');
         this.load.audio('sfx_rocket', './assets/rocket_fire.wav');
         this.load.audio('sfx_select', './assets/select.wav');
+        this.load.audio('background_music', './assets/Captain Scurvy.mp3');
     }
 
     create() {
+        //play music
+        if(bgMusic == undefined)
+        {
+            bgMusic = this.sound.add('background_music');
+        }
+
         //place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 1280, 480, 'starfield').setOrigin(0, 0);
 
@@ -81,7 +88,19 @@ class Play extends Phaser.Scene {
         //GAME OVER flag
         this.gameOver = false;
         
-        //Timer
+        //Speed Up Timer
+        this.clock = this.time.delayedCall(game.settings.gameTimer/2, () => {
+            //ships speed up
+            this.ship01.moveSpeed += 2;
+            this.ship02.moveSpeed += 2;
+            this.ship03.moveSpeed += 2;
+
+            //speed music up
+            bgMusic.setRate(1.5);
+        }, null, this);
+
+
+        //Game End Timer
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
@@ -104,11 +123,20 @@ class Play extends Phaser.Scene {
                 this.add.text(game.config.width/2, game.config.height/2 + 128, 'Tie!', scoreConfig).setOrigin(0.5);
             }
 
+            //slow music down
+            bgMusic.setRate(1);
+            
             this.gameOver = true;
         }, null, this);
     }
 
     update(){
+        //check if music is playing
+        if(!bgMusic.isPlaying)
+        {
+            bgMusic.play();
+        }
+
         //check for restart key
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
@@ -116,6 +144,9 @@ class Play extends Phaser.Scene {
 
         //check for menu key
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            //stops music
+            bgMusic.stop();
+            
             this.scene.start("menuScene");
         }
 
