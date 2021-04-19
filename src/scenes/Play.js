@@ -5,48 +5,49 @@ class Play extends Phaser.Scene {
 
     preload() {
         //load images
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('rocket2', './assets/rocket2.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('rocket', './assets/ship.png');
+        this.load.image('rocket2', './assets/ship2.png');
+        this.load.image('enemyShip', './assets/pirateShip.png');
+        this.load.image('background', './assets/ocean.png');
         
         //load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion', './assets/explosion2.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
 
         //load sounds
-        this.load.audio('sfx_explosion', './assets/explosion.wav');
-        this.load.audio('sfx_rocket', './assets/rocket_fire.wav');
+        this.load.audio('sfx_explosion', './assets/explosion2.wav');
+        this.load.audio('sfx_rocket', './assets/rocket_fire2.wav');
         this.load.audio('sfx_select', './assets/select.wav');
         this.load.audio('background_music', './assets/Captain Scurvy.mp3');
     }
 
     create() {
-        //play music
-        if(bgMusic == undefined)
+        //add music
+        if(bgMusic == undefined) //prevent duplication
         {
             bgMusic = this.sound.add('background_music');
+            bgMusic.setVolume(0.7);
         }
 
         //place tile sprite
-        this.starfield = this.add.tileSprite(0, 0, 1280, 480, 'starfield').setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, 1280, 480, 'background').setOrigin(0, 0);
 
         //green UI background
-        this.add.rectangle(0, borderUIsize + borderPadding, game.config.width, borderUIsize * 2, 0x00FF00).setOrigin(0, 0);
-
-        //white borders
-        this.add.rectangle(0, 0, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderUIsize, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(0, borderUIsize, game.config.width, borderUIsize * 2, 0x000).setOrigin(0, 0);
 
         //add rocket: player 1
         this.p1Rocket = new P1Rocket(this, game.config.width/4, game.config.height - borderUIsize - borderPadding, 'rocket', 0, 0).setOrigin(0.5, 0);
         this.p2Rocket = new P2Rocket(this, game.config.width*3/4, game.config.height - borderUIsize - borderPadding, 'rocket2', 0, 0).setOrigin(0.5, 0);
 
         //add spaceships
-        this.ship01 = new Spaceship(this, game.config.width + borderUIsize*6, borderUIsize*4, 'spaceship', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUIsize*3, borderUIsize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, borderUIsize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0, 0);
+        this.ship01 = new Spaceship(this, game.config.width + borderUIsize*6, borderUIsize*4, 'enemyShip', 0, 30).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, game.config.width + borderUIsize*3, borderUIsize*5 + borderPadding*2, 'enemyShip', 0, 20).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, game.config.width, borderUIsize*6 + borderPadding*4, 'enemyShip', 0, 10).setOrigin(0, 0);
+        
+        //white borders
+        this.add.rectangle(0, 0, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(0, game.config.height - borderUIsize, game.config.width, borderUIsize, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(0, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         //define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -71,19 +72,23 @@ class Play extends Phaser.Scene {
 
         //display score;
         let scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            fontFamily: 'Garamond',
+            fontSize: '32px',
+            backgroundColor: '#FF0000',
+            color: '#000',
             align: 'right',
             padding: {
                 top: 5,
                 bottom: 5,
+                left: 5,
+                right: 5
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUIsize + borderPadding, borderUIsize + borderPadding*2, this.p1Rocket.numScore, scoreConfig);
-        this.scoreRight = this.add.text(game.config.width - borderUIsize - borderPadding - scoreConfig.fixedWidth, borderUIsize + borderPadding*2, this.p2Rocket.numScore, scoreConfig);
+        this.scoreLeft = this.add.text(borderUIsize + borderPadding, borderUIsize + borderPadding, this.p1Rocket.numScore, scoreConfig);
+        scoreConfig.backgroundColor = '#FFFF00';
+        this.scoreRight = this.add.text(game.config.width - borderUIsize - borderPadding - scoreConfig.fixedWidth, borderUIsize + borderPadding, this.p2Rocket.numScore, scoreConfig);
+        scoreConfig.backgroundColor = '#F3B141';
 
         //GAME OVER flag
         this.gameOver = false;
@@ -146,12 +151,12 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             //stops music
             bgMusic.stop();
-            
+
             this.scene.start("menuScene");
         }
 
         //update background scrolling
-        this.starfield.tilePositionX -= 4;
+        this.background.tilePositionX -= 4;
         
         if(!this.gameOver)
         {
