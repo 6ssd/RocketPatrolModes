@@ -72,7 +72,7 @@ class Play extends Phaser.Scene {
 
         //display score;
         let scoreConfig = {
-            fontFamily: 'Garamond',
+            fontFamily: 'Lucida Console',
             fontSize: '32px',
             backgroundColor: '#FF0000',
             color: '#000',

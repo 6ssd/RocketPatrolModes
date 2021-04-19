@@ -14,6 +14,7 @@ Points Breakdown:
 Added Background Music: 5 pts
 Added Speed Increase: 5 pts 
 Simultaneous 2 Player: 30 pts
+Changed Theme: 60 pts
 */
 
 let config = {
