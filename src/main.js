@@ -2,6 +2,7 @@
 Nanxiang Wang
 Rocket Patrol Mods
 4/16/21
+Hours: ~10
 
 Music Credits:
 Captain Scurvy Kevin MacLeod (incompetech.com)
