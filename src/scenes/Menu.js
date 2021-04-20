@@ -8,14 +8,15 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion', './assets/explosion2.wav');
         this.load.audio('sfx_rocket', './assets/rocket_fire2.wav');
         this.load.audio('sfx_select', './assets/select.wav');
+        this.load.image('menu_background', './assets/menu_background.png');
+        this.load.image('menu_flag', './assets/menu_flag.png');
     }
 
     create() {
         //menu text config
         let menuConfig = {
-            fontFamily: 'Lucida Console',
+            fontFamily: 'Garamond',
             fontSize: '32px',
-            backgroundColor: '#F3B141',
             color: '#000',
             align: 'right',
             padding: {
@@ -29,14 +30,28 @@ class Menu extends Phaser.Scene {
 
         //menu background
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0xEBD5B3).setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, 1280, 480, 'menu_background').setOrigin(0, 0);
+        this.flag = this.add.tileSprite(game.config.width/2, borderUIsize+borderPadding, 134, 82, 'menu_flag').setOrigin(0.5, 0);
+
+        //black borders
+        this.add.rectangle(0, 0, game.config.width, borderUIsize, 0x000).setOrigin(0, 0);
+        this.add.rectangle(0, game.config.height - borderUIsize, game.config.width, borderUIsize, 0x000).setOrigin(0, 0);
+        this.add.rectangle(0, 0, borderUIsize, game.config.height, 0x000).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - borderUIsize, 0, borderUIsize, game.config.height, 0x000).setOrigin(0, 0);
+
+        //gold borders
+        this.add.rectangle(game.config.width/2, borderUIsize/4, game.config.width - borderPadding*2, borderUIsize/2, 0xFFD700).setOrigin(0.5, 0);
+        this.add.rectangle(game.config.width/2, game.config.height - (borderUIsize * (3/4)), game.config.width - borderPadding*2, borderUIsize/2, 0xFFD700).setOrigin(0.5, 0);
+        this.add.rectangle(borderUIsize/4, game.config.height/2, borderUIsize/2, game.config.height - borderPadding*2, 0xFFD700).setOrigin(0, 0.5);
+        this.add.rectangle(game.config.width - (borderUIsize * (3/4)), game.config.height/2, borderUIsize/2, game.config.height - borderPadding*2, 0xFFD700).setOrigin(0, 0.5);
 
         //show menu text
         this.add.text(game.config.width/2, game.config.height/2 + (-borderUIsize - borderPadding)*2, 'ROCKET PATROL: Pirate Edition', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 - borderUIsize - borderPadding, '2 Player Mode', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2, 'Player 1: Use (A) & (D) keys to move & (W) to fire', menuConfig).setOrigin(0.5);
         this.add.text(game.config.width/2, game.config.height/2 + borderUIsize + borderPadding, 'Player 2: Use (J) & (L) keys to move & (I) to fire', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
-        this.add.text(game.config.width/2, game.config.height/2 + (borderUIsize + borderPadding)*2, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        menuConfig.backgroundColor = '#FFD700';
+        this.add.text(game.config.width/2, game.config.height/2 + (borderUIsize + borderPadding)*3, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
         
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
